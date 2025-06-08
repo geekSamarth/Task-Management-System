@@ -1,6 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 
 const userSchema = new Schema(
   {
@@ -97,6 +98,21 @@ userSchema.methods.generateRefreshToken = function () {
     },
   );
   return refreshToken;
+};
+
+// method to generate email verification token
+
+userSchema.methods.generateVerificationToken = function () {
+  const unHashedToken = crypto.randomBytes(20).toString("hex");
+
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(unHashedToken)
+    .digest("hex");
+
+  const tokenExpiry = Date.now() + 20 * 60 * 1000; //20 minutes
+
+  return { hashedToken, unHashedToken, tokenExpiry };
 };
 
 export const User = mongoose.model("User", userSchema);
