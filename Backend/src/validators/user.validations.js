@@ -8,6 +8,7 @@ export const userRegistrationValidator = () => {
       .withMessage("Email is required")
       .isEmail()
       .withMessage("Email is invalid"),
+
     body("username")
       .trim()
       .notEmpty()
@@ -21,13 +22,32 @@ export const userRegistrationValidator = () => {
       .notEmpty()
       .withMessage("password is required")
       .isLength({ min: 8 })
-      .withMessage("password should be at least 8 character long"),
+      .withMessage("password should be at least 8 character long")
+      .matches(/\d/)
+      .withMessage("password must contain at least one number")
+      .matches(/[A-Z]/)
+      .withMessage("password must contain at least one uppercase letter"),
+
+    body("fullname").notEmpty().withMessage("fullname cannot be empty"),
   ];
 };
 
 export const userLoginValidation = () => {
   return [
-    body("email").isEmpty.isEmail().withMessage("Email is not valid"),
-    body("password").notEmpty().withMessage("Password cannot be empty"),
+    body("email")
+      .notEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Email is not valid"),
+    body("password")
+      .notEmpty()
+      .withMessage("Password cannot be empty")
+      .isLength({ min: 8 })
+      .withMessage("Password should be 8 character long")
+      .matches(/\d/)
+      .withMessage("password must have atleast one digit")
+      .matches(/[A-Z]/)
+      .withMessage("password must contain at least one uppercase letter"),
   ];
 };
+
