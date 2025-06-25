@@ -32,7 +32,7 @@ export const userRegistrationValidator = () => {
   ];
 };
 
-export const userLoginValidation = () => {
+export const userLoginValidator = () => {
   return [
     body("email")
       .notEmpty()
@@ -51,3 +51,12 @@ export const userLoginValidation = () => {
   ];
 };
 
+export const resendVerificationMailValidator = () => {
+  return [
+    body("email")
+      .isEmail()
+      .withMessage("Please provide a valid email")
+      .isEmpty()
+      .withMessage("Email is required!"),
+  ];
+};

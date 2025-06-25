@@ -82,3 +82,18 @@ export const resetPasswordMailGenContent = (username, passwordResetUrl) => {
     },
   };
 };
+
+export const sendVerificationEmail = async (username, email, token) => {
+  const link = `${process.env.BASE_URL}:${process.env.PORT}/api/v1/verify/${token}`;
+  const content = emailVerificationMailGenContent(username, link);
+  await sendMail(email, "verify your email", content);
+};
+
+export const sendResetPasswordUrl = async (username, token, email) => {
+  const link = `${process.env.BASE_URL}:${process.env.PORT}/api/v1/reset-password/${token}`;
+  await sendMail(
+    email,
+    "reset your password",
+    resetPasswordMailGenContent(username, link),
+  );
+};
