@@ -27,3 +27,27 @@ export const uploadOnCloudinary = async (localpath) => {
     throw new ApiError(500, "Failed to upload the image on cloudinary");
   }
 };
+
+export const deleteOnCloudinary = async (
+  public_id,
+  resource_type = "image",
+) => {
+  try {
+    if (!public_id) {
+      return null;
+    }
+    // delete file from cloudinary
+    const result = await cloudinary.uploader.destroy(public_id, {
+      resource_type: `${resource_type}`,
+    });
+    if (!result) {
+      return error;
+    }
+  } catch (error) {
+    console.log("error in deleting file from cloudinary!");
+    throw new ApiError(
+      500,
+      "Failed to delete the previous image from cloudinary",
+    );
+  }
+};
